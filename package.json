@@ -1,0 +1,23 @@
+{
+  "name": "qp-vue",
+  "version": "1.0.1",
+  "description": "vue.js utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cjr--/qp-vue.git"
+  },
+  "author": "CJR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cjr--/qp-vue/issues"
+  },
+  "homepage": "https://github.com/cjr--/qp-vue#readme",
+  "dependencies": {
+    "vue-template-compiler": "^2.3.3",
+    "vue-template-es2015-compiler": "^1.5.2"
+  }
+}
