@@ -29,6 +29,10 @@ define(module, function(exports, require, make) {
 
     register: function(view, vm) {
       Vue.component(vm.name, qp.assign(vm, view));
+    },
+
+    template: function(component) {
+      return function(h) { return h(component); };
     }
 
   });
