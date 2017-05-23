@@ -1,4 +1,4 @@
-define(module, function(exports, require, make) {
+define(module, function(exports, require) {
 
   var path = require('path');
   var qp = require('qp-utility');

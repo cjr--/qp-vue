@@ -7,12 +7,16 @@ define(module, function(exports, require, make) {
 
   Vue.config.productionTip = false;
 
-  exports({
-
-    ns: 'qp-vue',
+  exports('qp-vue', {
 
     create: function(o) {
-      qp.ready(function() { new Vue(o); });
+      qp.ready(function() {
+        if (qp.is(o.render, 'string')) {
+          var component_name = o.render;
+          o.render = function(h) { return h(component_name); };
+        }
+        new Vue(o);
+      });
     },
 
     store: function(o) {
@@ -29,10 +33,6 @@ define(module, function(exports, require, make) {
 
     register: function(view, vm) {
       Vue.component(vm.name, qp.assign(vm, view));
-    },
-
-    template: function(component) {
-      return function(h) { return h(component); };
     }
 
   });
