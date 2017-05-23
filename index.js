@@ -9,6 +9,8 @@ define(module, function(exports, require) {
 
   exports({
 
+    ns: 'qp_vue',
+
     component: function(filepath) {
       var name = path.basename(filepath);
 
