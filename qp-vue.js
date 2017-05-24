@@ -1,4 +1,4 @@
-define(module, function(exports, require, make) {
+define(module, function(exports, require) {
 
   var qp = require('qp-utility');
   var Vue = require('vue');
@@ -7,13 +7,14 @@ define(module, function(exports, require, make) {
 
   Vue.config.productionTip = false;
 
-  exports('qp-vue', {
+  qp.module(exports, {
+
+    ns: 'qp-vue',
 
     create: function(o) {
       qp.ready(function() {
         if (qp.is(o.render, 'string')) {
-          var component_name = o.render;
-          o.render = function(h) { return h(component_name); };
+          o.render = function(h) { return h(o.render); };
         }
         new Vue(o);
       });
