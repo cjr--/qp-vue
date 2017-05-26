@@ -7,16 +7,18 @@ define(module, function(exports, require) {
 
   Vue.config.productionTip = false;
 
-  qp.module(exports, {
+  exports({
 
     ns: 'qp-vue',
 
     create: function(o) {
       qp.ready(function() {
         if (qp.is(o.render, 'string')) {
-          o.render = function(h) { return h(o.render); };
+          var component_name = o.render;
+          o.render = function(h) { return h(component_name); };
         }
-        new Vue(o);
+        var vue = new Vue(o);
+        vue.$mount('#main');
       });
     },
 
@@ -32,8 +34,20 @@ define(module, function(exports, require) {
       }));
     },
 
-    register: function(view, vm) {
-      Vue.component(vm.name, qp.assign(vm, view));
+    make: function(o) {
+      var data = o.data;
+      o.data = function() { return qp.clone(data); };
+      qp.assign(o, qp.delete(require(o.ns + '/template'), 'ns'));
+      o.name = qp.after(o.ns, 'component/');
+      return exports(o.ns, Vue.extend(o));
+    },
+
+    register: function(o) {
+      var id = qp.delete_key(o, 'ns');
+      var data = o.data;
+      o.data = function() { return qp.clone(data); };
+      qp.assign(o, qp.delete(require(id + '/template'), 'ns'));
+      Vue.component(id, o);
     }
 
   });
