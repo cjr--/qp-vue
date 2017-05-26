@@ -12,31 +12,33 @@ define(module, function(exports, require) {
     ns: 'qp_vue',
 
     component: function(filepath, is_global) {
-      var name = path.basename(filepath);
-      var ns;
-      if (is_global) {
-        ns = name + '/template';
-      } else {
-        ns = 'component/' + qp.after(filepath, '/component/') + '/template';
-      }
-
-      var css_file = path.join(filepath, name + '.css');
-      var js_file = path.join(filepath, name + '.js');
-      var html_file = path.join(filepath, name + '.html');
-      var tpl_file = path.join(filepath, name + '.template.js');
-
       var assets = {
-        files: { copy: [], merge: [ css_file, tpl_file, js_file ] }
+        files: { copy: [], merge: [ ] }
       };
 
-      var template = vue_compiler.compile(fss.read(html_file));
-      var compiled = qp.build(
-        'module.exports(\'', ns, '\', {\n',
-        '  render:function(){', template.render, '},\n',
-        '  staticRenderFns:[', qp.map(template.staticRenderFns, (fn) => 'function(){' + fn + '}').join(), ']\n',
-        '});\n'
-      );
-      fss.write(tpl_file, es6_transpile(compiled));
+      var name = path.basename(filepath);
+      if (fss.exists(filepath, name + '.html')) {
+        var ns;
+        if (is_global) {
+          ns = name + '/template';
+        } else {
+          ns = 'component/' + qp.after(filepath, '/component/') + '/template';
+        }
+
+        var tpl_file = path.join(filepath, name + '.template.js');
+        assets.files.merge.push(tpl_file);
+        assets.files.merge.push(path.join(filepath, name + '.css'));
+        assets.files.merge.push(path.join(filepath, name + '.js'));
+
+        var template = vue_compiler.compile(fss.read(path.join(filepath, name + '.html')));
+        var compiled = qp.build(
+          'module.exports(\'', ns, '\', {\n',
+          '  render:function(){', template.render, '},\n',
+          '  staticRenderFns:[', qp.map(template.staticRenderFns, (fn) => 'function(){' + fn + '}').join(), ']\n',
+          '});\n'
+        );
+        fss.write(tpl_file, es6_transpile(compiled));
+      }
 
       return assets;
     }
