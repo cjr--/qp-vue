@@ -22,14 +22,12 @@ define(module, function(exports, require) {
 
     store: function(o) {
       Vue.use(Vuex);
-      return new Vuex.Store(o);
+      return exports(o.ns, new Vuex.Store(o));
     },
 
     router: function(o) {
       Vue.use(VueRouter);
-      return new VueRouter(qp.options(o, {
-        mode: 'history'
-      }));
+      return new VueRouter(o);
     },
 
     make: function(o) {
@@ -49,7 +47,7 @@ define(module, function(exports, require) {
       var data = o.data || {};
       o.data = function() { return qp.clone(data); };
       o.name = qp.after(o.ns, 'component/');
-      qp.assign(o, qp.delete(require(o.ns + '/template'), 'ns'));
+      qp.assign(o, require(o.ns + '/template'));
       return Vue.extend(o);
     }
 
