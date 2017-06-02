@@ -7,6 +7,16 @@ define(module, function(exports, require) {
 
   Vue.config.productionTip = false;
 
+  function clone_state(state) {
+    if (qp.is(state, 'undefined')) {
+      return function() { return {}; };
+    } else if (qp.is(state, 'function')) {
+      return state;
+    } else {
+      return function() { return qp.clone(state); };
+    }
+  }
+
   qp.module(exports, {
 
     ns: 'qp-vue',
@@ -18,11 +28,6 @@ define(module, function(exports, require) {
       }
       var vue = new Vue(o);
       qp.ready(function() { vue.$mount('#main'); });
-    },
-
-    store: function(o) {
-      Vue.use(Vuex);
-      return exports(o.ns, new Vuex.Store(o));
     },
 
     router: function(o) {
@@ -44,12 +49,24 @@ define(module, function(exports, require) {
     },
 
     extend: function(o) {
-      var data = o.data || {};
-      o.data = function() { return qp.clone(data); };
+      o.data = clone_state(o.data);
       o.name = qp.after(o.ns, 'component/');
       qp.assign(o, require(o.ns + '/template'));
       return Vue.extend(o);
-    }
+    },
+
+    /* Vuex */
+
+    store: function(o) {
+      Vue.use(Vuex);
+      o.state = clone_state(o.state);
+      return exports(o.ns, new Vuex.Store(o));
+    },
+
+    map_state: function() { return Vuex.mapState.apply(null, arguments); },
+    map_getters: function() { return Vuex.mapGetters.apply(null, arguments); },
+    map_actions: function() { return Vuex.mapActions.apply(null, arguments); },
+    map_mutations: function() { return Vuex.mapMutations.apply(null, arguments); }
 
   });
 
