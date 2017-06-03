@@ -32,7 +32,9 @@ define(module, function(exports, require) {
 
     router: function(o) {
       Vue.use(VueRouter);
-      return new VueRouter(o);
+      return new VueRouter(qp.options(o, {
+        mode: 'history'
+      }));
     },
 
     make: function(o) {
