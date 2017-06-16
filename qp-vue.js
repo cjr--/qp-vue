@@ -69,7 +69,6 @@ define(module, function(exports, require) {
           o.actions = qp.assign(o.actions, mixin.actions);
         });
       }
-      o.state = clone_state(o.state);
       return exports(o.ns, new Vuex.Store(o));
     },
 
