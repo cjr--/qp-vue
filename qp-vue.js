@@ -61,6 +61,14 @@ define(module, function(exports, require) {
 
     store: function(o) {
       Vue.use(Vuex);
+      if (o.mixins) {
+        qp.each(o.mixins, (mixin) => {
+          o.state = qp.assign(o.state, mixin.state);
+          o.getters = qp.assign(o.getters, mixin.getters);
+          o.mutations = qp.assign(o.mutations, mixin.mutations);
+          o.actions = qp.assign(o.actions, mixin.actions);
+        });
+      }
       o.state = clone_state(o.state);
       return exports(o.ns, new Vuex.Store(o));
     },
