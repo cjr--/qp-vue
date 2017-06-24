@@ -30,6 +30,10 @@ define(module, function(exports, require) {
       qp.ready(function() { vue.$mount('#main'); });
     },
 
+    use: function(plugin) {
+      Vue.use(plugin);
+    },
+
     router: function(o) {
       Vue.use(VueRouter);
       return new VueRouter(qp.options(o, {
