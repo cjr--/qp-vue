@@ -17,9 +17,9 @@
   },
   "homepage": "https://github.com/cjr--/qp-vue#readme",
   "dependencies": {
-    "qp-library": "^2.0.4",
-    "qp-utility": "^1.4.6",
-    "vue-template-compiler": "^2.3.3",
-    "vue-template-es2015-compiler": "^1.5.2"
+    "qp-library": "^2.0.7",
+    "qp-utility": "^1.4.12",
+    "vue-template-compiler": "^2.4.2",
+    "vue-template-es2015-compiler": "^1.5.3"
   }
 }
