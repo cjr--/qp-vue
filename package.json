@@ -1,6 +1,6 @@
 {
   "name": "qp-vue",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "vue.js utilities",
   "main": "index.js",
   "scripts": {
