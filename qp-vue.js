@@ -56,7 +56,7 @@ define(module, function(exports, require) {
 
     extend: function(o) {
       o.data = clone_state(o.data);
-      o.name = qp.after(o.ns, 'component/');
+      o.name = qp.split(o.ns, '/').pop();
       qp.assign(o, require(o.ns + '/template'));
       return Vue.extend(o);
     },
