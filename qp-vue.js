@@ -67,10 +67,12 @@ define(module, function(exports, require) {
       Vue.use(Vuex);
       if (o.mixins) {
         qp.each(o.mixins, (mixin) => {
-          o.state = qp.assign(o.state, mixin.state);
-          o.getters = qp.assign(o.getters, mixin.getters);
-          o.mutations = qp.assign(o.mutations, mixin.mutations);
-          o.actions = qp.assign(o.actions, mixin.actions);
+          if (mixin) {
+            o.state = qp.assign(o.state, mixin.state);
+            o.getters = qp.assign(o.getters, mixin.getters);
+            o.mutations = qp.assign(o.mutations, mixin.mutations);
+            o.actions = qp.assign(o.actions, mixin.actions);
+          }
         });
       }
       return exports(o.ns, new Vuex.Store(o));
