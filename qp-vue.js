@@ -5,8 +5,6 @@ define(module, function(exports, require) {
   var Vuex = require('vuex');
   var VueRouter = require('vue-router');
 
-  Vue.config.productionTip = false;
-
   function clone_state(state) {
     if (qp.is(state, 'undefined')) {
       return function() { return {}; };
@@ -66,14 +64,14 @@ define(module, function(exports, require) {
     store: function(o) {
       Vue.use(Vuex);
       if (o.mixins) {
-        qp.each(o.mixins, (mixin) => {
+        qp.each(o.mixins, function(mixin) {
           if (mixin) {
             o.state = qp.assign(o.state, mixin.state);
             o.getters = qp.assign(o.getters, mixin.getters);
             o.mutations = qp.assign(o.mutations, mixin.mutations);
             o.actions = qp.assign(o.actions, mixin.actions);
           }
-        });
+        }.bind(this));
       }
       return exports(o.ns, new Vuex.Store(o));
     },

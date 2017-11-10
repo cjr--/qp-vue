@@ -21,5 +21,8 @@
     "qp-utility": "^1.4.12",
     "vue-template-compiler": "^2.4.2",
     "vue-template-es2015-compiler": "^1.5.3"
+  },
+  "devDependencies": {
+    "uglify-js": "^3.1.7"
   }
 }
