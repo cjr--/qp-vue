@@ -12,4 +12,6 @@ fs.writeFileSync(
   result.code
 );
 
-console.log(result.error);
+if (result.error) {
+  console.log(result.error);
+}

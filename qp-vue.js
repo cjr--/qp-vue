@@ -1,19 +1,10 @@
 define(module, function(exports, require) {
 
   var qp = require('qp-utility');
-  var Vue = require('vue');
-  var Vuex = require('vuex');
-  var VueRouter = require('vue-router');
 
-  function clone_state(state) {
-    if (qp.is(state, 'undefined')) {
-      return function() { return {}; };
-    } else if (qp.is(state, 'function')) {
-      return state;
-    } else {
-      return function() { return qp.clone(state); };
-    }
-  }
+  var Vue = require('Vue');
+  var Vuex = require('Vuex');
+  var VueRouter = require('VueRouter');
 
   qp.module(exports, {
 
@@ -53,7 +44,6 @@ define(module, function(exports, require) {
     },
 
     extend: function(o) {
-      o.data = clone_state(o.data);
       o.name = qp.split(o.ns, '/').pop();
       qp.assign(o, require(o.ns + '/template'));
       return Vue.extend(o);
