@@ -35,14 +35,6 @@ define(module, function(exports, require) {
       return exports(ns, this.extend(o));
     },
 
-    register: function(id, o) {
-      if (qp.is(o, 'function')) {
-        Vue.component(id, o);
-      } else {
-        Vue.component(id, this.extend(o));
-      }
-    },
-
     extend: function(o) {
       o.name = qp.split(o.ns, '/').pop();
       qp.assign(o, require(o.ns + '/template'));
