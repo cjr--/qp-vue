@@ -25,8 +25,7 @@ define(module, function(exports, require) {
       Vue.use(plugin);
     },
 
-    make: function(o) {
-      var ns = o.ns;
+    extend: function(o) {
       if (o.computed ) {
         if (o.computed.map_getters) qp.assign(o.computed, Vuex.mapGetters(qp.delete_key(o.computed, 'map_getters', {})));
         if (o.computed.map_state) qp.assign(o.computed, Vuex.mapState(qp.delete_key(o.computed, 'map_state', {})));
@@ -35,13 +34,10 @@ define(module, function(exports, require) {
         if (o.methods.map_actions) qp.assign(o.methods, Vuex.mapActions(qp.delete_key(o.methods, 'map_actions', {})));
         if (o.methods.map_mutations) qp.assign(o.methods, Vuex.mapMutations(qp.delete_key(o.methods, 'map_mutations', {})));
       }
-      return exports(ns, this.extend(o));
-    },
-
-    extend: function(o) {
-      o.name = qp.split(o.ns, '/').pop();
-      qp.assign(o, require(o.ns + '/template'));
-      return Vue.extend(o);
+      qp.assign(o, qp.pick(require(o.ns + '/template'), 'render', 'staticRenderFns'));
+      var ctor = Vue.extend(o);
+      ctor.tag_name = qp.split(o.ns, '/').pop();
+      return exports(o.ns, ctor);
     },
 
     /* Vuex */
