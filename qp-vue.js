@@ -36,7 +36,7 @@ define(module, function(exports, require) {
       }
       qp.assign(o, qp.pick(require(o.ns + '/template'), 'render', 'staticRenderFns'));
       var ctor = Vue.extend(o);
-      ctor.tag_name = qp.split(o.ns, '/').pop();
+      ctor.options.name = qp.split(o.ns, '/').pop();
       return exports(o.ns, ctor);
     },
 
