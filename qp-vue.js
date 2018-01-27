@@ -44,6 +44,12 @@ define(module, function(exports, require) {
 
     store: function(o) {
       Vue.use(Vuex);
+      qp.each(qp.delete_key(o, 'mixins'), (mixin) => {
+        qp.assign(o.state, mixin.state);
+        qp.assign(o.getters, mixin.getters);
+        qp.assign(o.mutations, mixin.mutations);
+        qp.assign(o.actions, mixin.actions);
+      });
       return exports(o.ns, new Vuex.Store(o));
     },
 
