@@ -16,7 +16,6 @@ define(module, function(exports, require) {
         o.render = function(h) { return h(component_name); };
       }
       if (o.store) o.created = function() { this.$store.dispatch('initialise'); };
-      this.create_store_route(o.store, o.router);
       var vue = new Vue(o);
       qp.ready(function() { vue.$mount('#main'); });
     },
