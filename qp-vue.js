@@ -15,9 +15,11 @@ define(module, function(exports, require) {
         var component_name = o.render;
         o.render = function(h) { return h(component_name); };
       }
-      if (o.store) o.created = function() { this.$store.dispatch('initialise'); };
       var vue = new Vue(o);
-      qp.ready(function() { vue.$mount('#main'); });
+      qp.ready(function() {
+        vue.$mount('#main');
+        vue.$store.dispatch('initialise');
+      });
     },
 
     use: function(plugin) {
