@@ -15,6 +15,7 @@ define(module, function(exports, require) {
         var component_name = o.render;
         o.render = function(h) { return h(component_name); };
       }
+      this.create_store_route(o.store, o.router);
       var vue = new Vue(o);
       qp.ready(function() {
         vue.$mount('#main');
