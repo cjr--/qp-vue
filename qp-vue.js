@@ -59,9 +59,7 @@ define(module, function(exports, require) {
 
     router: function(o) {
       Vue.use(VueRouter);
-      return new VueRouter(qp.options(o, {
-        mode: 'history'
-      }));
+      return exports(o.ns, new VueRouter({ mode: 'history', routes: o.routes }));
     },
 
     /* Vuex - VueRouter - Sync */
