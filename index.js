@@ -41,7 +41,14 @@ define(module, function(exports, require) {
         '  staticRenderFns:[', qp.map(template.staticRenderFns, (fn) => 'function(){' + fn + '}').join(), ']\n',
         '});\n'
       );
-      fss.write(tpl_file, es6_transpile(compiled));
+      var transpiled = '';
+      try {
+        transpiled = es6_transpile(compiled);
+      } catch (error) {
+        console.log(error.snippet);
+        throw error;
+      }
+      fss.write(tpl_file, transpiled);
     },
 
     create_component_file: function(component) {
