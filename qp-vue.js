@@ -13,14 +13,10 @@ define(module, function(exports, require) {
     create: function(o) {
       if (qp.is(o.render, 'string')) {
         var component_name = o.render;
-        o.render = function(h) { return h(component_name); };
+        o.render = (h) => h(component_name)
       }
-      this.create_store_route(o.store, o.router);
       var vue = new Vue(o);
-      qp.ready(function() {
-        vue.$mount('#main');
-        vue.$store.dispatch('initialise');
-      });
+      qp.ready(() => vue.$mount('#main'));
     },
 
     use: function(plugin) {
@@ -59,60 +55,19 @@ define(module, function(exports, require) {
 
     router: function(o) {
       Vue.use(VueRouter);
-      return exports(o.ns, new VueRouter({ mode: 'history', routes: o.routes }));
-    },
-
-    /* Vuex - VueRouter - Sync */
-
-    // https://github.com/vuejs/vuex-router-sync
-    create_store_route: function(store, router) {
-      if (store && router) {
-        var is_time_traveling = false;
-        var currentPath = null;
-
-        store.registerModule('route', {
-          namespaced: true,
-          state: clone_route(router.currentRoute),
-          mutations: {
-            route_changed: (state, transition) => store.state.route = clone_route(transition.to, transition.from)
-          }
+      var router = new VueRouter({ mode: 'history', routes: o.routes });
+      if (o.beforeFirst) {
+        router.beforeEach((to, from, next) => {
+          if (!router.app_initialised) {
+            router.app_initialised = true;
+            o.beforeFirst(to, from, next);
+          } else { next(); }
         });
-
-        var unwatch = store.watch(
-          (state) => state['route'],
-          (route) => {
-            var fullPath = route.fullPath;
-            if (fullPath === currentPath) return;
-            if (currentPath != null) {
-              is_time_traveling = true;
-              router.push(route);
-            }
-            currentPath = fullPath;
-          },
-          { sync: true }
-        );
-
-        var unhook = router.afterEach((to, from) => {
-          if (is_time_traveling) {
-            is_time_traveling = false;
-            return;
-          }
-          currentPath = to.fullPath;
-          store.commit('route/route_changed', { to: to, from: from });
-        });
-
-        function clone_route(to, from) {
-          var clone = { name: to.name, path: to.path, hash: to.hash, query: to.query, params: to.params, fullPath: to.fullPath, meta: to.meta }
-          if (from) clone.from = clone_route(from)
-          return Object.freeze(clone)
-        }
-
-        function destroy_store_route() {
-          if (unhook) unhook();
-          if (unwatch) unwatch();
-          store.unregisterModule('route');
-        }
       }
+      if (o.beforeEach) router.beforeEach(o.beforeEach);
+      if (o.beforeResolve) router.beforeResolve(o.beforeResolve);
+      if (o.afterEach) router.afterEach(o.afterEach);
+      return exports(o.ns, router);
     }
 
   });
