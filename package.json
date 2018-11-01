@@ -17,12 +17,13 @@
   },
   "homepage": "https://github.com/cjr--/qp-vue#readme",
   "dependencies": {
-    "qp-library": "^2.1.32",
-    "qp-utility": "^1.4.51",
+    "qp-define": "*",
+    "qp-utility": "^1.4.52",
     "vue-template-compiler": "^2.5.17",
     "vue-template-es2015-compiler": "^1"
   },
   "devDependencies": {
+    "qp-library": "^2.1.34",
     "uglify-es": "^3"
   }
 }
